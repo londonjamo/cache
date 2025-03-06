@@ -1,0 +1,12 @@
+
+services:
+  app-99:
+    build: .
+    environment:
+      ZOOKEEPER_HOST: zookeeper
+      ZOOKEEPER_PORT: 2181
+      PORT: ${PORT}
+    ports:
+      - ${PORT}:${PORT}
+
+

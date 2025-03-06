@@ -1,0 +1,57 @@
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  zk-cli:
+    image: confluentinc/cp-zookeeper:latest
+    depends_on:
+      - zookeeper
+    command: zookeeper-shell  localhost:2181 create /members 
+  bootstrap:
+    build: .
+    environment:
+      ZOOKEEPER_HOST: zookeeper
+      ZOOKEEPER_PORT: 2181
+      PORT: 2999
+    depends_on:
+      - zookeeper
+    ports:
+      - 2999:2999
+
+  app-1:
+    build: .
+    environment:
+      ZOOKEEPER_HOST: zookeeper
+      ZOOKEEPER_PORT: 2181
+      PORT: 3000
+    depends_on:
+      - zookeeper
+    ports:
+      - 3000:3000
+
+  app-2:
+    build: .
+    environment:
+      ZOOKEEPER_HOST: zookeeper
+      ZOOKEEPER_PORT: 2181
+      PORT: 3001
+    depends_on:
+      - zookeeper
+    ports:
+      - 3001:3001
+
+  app-3:
+    build: .
+    environment:
+      ZOOKEEPER_HOST: zookeeper
+      ZOOKEEPER_PORT: 2181
+      PORT: 3002
+    depends_on:
+      - zookeeper
+    ports:
+      - "3002:3002"
